@@ -1,0 +1,32 @@
+{
+  "name": "web-ssh-client",
+  "version": "1.0.0",
+  "description": "Web-based SSH Remote Client with Full-Featured File Manager",
+  "private": true,
+  "workspaces": [
+    "apps/web",
+    "apps/gateway",
+    "packages/shared-types",
+    "packages/protocol"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:web\" \"npm run dev:gateway\"",
+    "dev:web": "npm run dev --workspace=apps/web",
+    "dev:gateway": "npm run dev --workspace=apps/gateway",
+    "build": "npm run build --workspaces",
+    "build:web": "npm run build --workspace=apps/web",
+    "build:gateway": "npm run build --workspace=apps/gateway",
+    "start": "npm run start --workspace=apps/gateway",
+    "lint": "eslint . --ext .ts,.tsx",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "concurrently": "^8.2.2",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

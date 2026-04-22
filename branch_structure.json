@@ -1,0 +1,18 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "main",
+    "ssh-connection-issue-cbc98",
+    "web-based-ssh-client-with-integrated-file-manager-813ac"
+  ],
+  "parent": {
+    "main": null,
+    "ssh-connection-issue-cbc98": "main",
+    "web-based-ssh-client-with-integrated-file-manager-813ac": "main"
+  },
+  "order": [
+    "main",
+    "ssh-connection-issue-cbc98",
+    "web-based-ssh-client-with-integrated-file-manager-813ac"
+  ]
+}

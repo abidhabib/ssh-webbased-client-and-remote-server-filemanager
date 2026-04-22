@@ -14,8 +14,7 @@ export function TerminalPanel() {
   const fitAddonRef = useRef<FitAddon | null>(null)
   const wsRef = useRef<WebSocket | null>(null)
   
-  const { sessions, activeSessionId, addSession, terminalSize, setTerminalSize } = useTerminal()
-  const { currentConnection } = useTerminal()
+  const { sessions, activeSessionId, addSession, terminalSize, setTerminalSize, currentConnection } = useTerminal()
 
   // Initialize terminal
   useEffect(() => {
@@ -67,19 +66,6 @@ export function TerminalPanel() {
     xtermRef.current = term
     fitAddonRef.current = fitAddon
 
-    // Create initial session
-    if (currentConnection && sessions.size === 0) {
-      const session: TerminalSession = {
-        id: crypto.randomUUID(),
-        connectionId: currentConnection.id,
-        tabName: `${currentConnection.username}@${currentConnection.host}`,
-        cwd: '~',
-        isActive: true,
-        createdAt: new Date(),
-      }
-      addSession(session)
-    }
-
     // Handle terminal input
     term.onData((data) => {
       if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
@@ -113,6 +99,29 @@ export function TerminalPanel() {
     }
   }, [])
 
+  // Send connection request when currentConnection changes
+  useEffect(() => {
+    if (currentConnection && wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({
+        type: 'connect',
+        payload: currentConnection,
+      }))
+      
+      // Create session for the connection
+      if (sessions.size === 0) {
+        const session: TerminalSession = {
+          id: crypto.randomUUID(),
+          connectionId: currentConnection.id,
+          tabName: `${currentConnection.username}@${currentConnection.host}`,
+          cwd: '~',
+          isActive: true,
+          createdAt: new Date(),
+        }
+        addSession(session)
+      }
+    }
+  }, [currentConnection])
+
   const connectWebSocket = (term: Terminal) => {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
     const wsUrl = `${protocol}//${window.location.host}/ws`
@@ -134,10 +143,19 @@ export function TerminalPanel() {
         // Handle text data (terminal output)
         try {
           const message = JSON.parse(event.data)
+          console.log('Received WebSocket message:', message.type)
+          
           if (message.type === 'terminal:data') {
             term.write(message.payload)
+          } else if (message.type === 'connect_success') {
+            console.log('Connection successful, session ID:', message.sessionId)
+            term.writeln('\\r\\n\\x1b[32mSSH connection established!\\x1b[0m\\r\\n')
+          } else if (message.type === 'error') {
+            console.error('Server error:', message.payload)
+            term.writeln(`\\r\\n\\x1b[31mError: ${message.payload}\\x1b[0m\\r\\n`)
           }
-        } catch {
+        } catch (e) {
+          console.error('Failed to parse message:', e)
           term.write(event.data)
         }
       }

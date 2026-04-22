@@ -82,19 +82,35 @@ export class WebSocketHandler {
   private async handleConnect(payload: any) {
     const { host, port, username, password, privateKey, passphrase } = payload
     
+    console.log('Connecting to SSH:', { host, port, username })
+    
     // Create new SSH client
     const ssh = new SSHClient()
     await ssh.connect({ host, port, username, password, privateKey, passphrase })
     
+    console.log('SSH connected successfully')
+    
     // Create shell
     const stream = await ssh.createShell()
     
+    console.log('Shell created')
+    
     // Setup stream handlers
     stream.on('data', (data: Buffer) => {
+      const output = data.toString('utf-8')
+      console.log('Received data from SSH:', output.substring(0, 50))
       this.sendMessage({
         type: 'terminal:data',
-        payload: data.toString('utf-8'),
+        payload: output,
       })
+    })
+
+    stream.on('close', () => {
+      console.log('SSH stream closed')
+    })
+
+    stream.stderr?.on('data', (data: Buffer) => {
+      console.error('SSH stderr:', data.toString('utf-8'))
     })
 
     // Get SFTP
@@ -104,6 +120,8 @@ export class WebSocketHandler {
     // Store session
     this.sessionId = crypto.randomUUID()
     this.sessions.set(this.sessionId, { ssh, sftp })
+    
+    console.log('Session created with ID:', this.sessionId)
     
     this.sendMessage({
       type: 'connect_success',

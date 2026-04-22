@@ -9,16 +9,16 @@ interface ConnectionManagerProps {
 export function ConnectionManager({ onClose }: ConnectionManagerProps) {
   const [connections, setConnections] = useState<SSHConnection[]>([])
   const [showNewConnectionForm, setShowNewConnectionForm] = useState(false)
-  const { setConnection, setIsConnecting, setError } = useTerminal()
+  const { setConnection, setIsConnecting, setError, currentConnection } = useTerminal()
 
   const handleConnect = async (conn: SSHConnection) => {
     setIsConnecting(true)
     setError(null)
     
     try {
-      // TODO: Implement WebSocket connection
       setConnection(conn)
       console.log('Connected to:', conn.host)
+      onClose()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Connection failed')
     } finally {

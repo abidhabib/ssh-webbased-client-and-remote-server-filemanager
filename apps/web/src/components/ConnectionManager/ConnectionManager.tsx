@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useTerminal } from '../../stores/terminalStore'
+import { useTerminal } from '../../stores/terminalStore.tsx'
 import type { SSHConnection } from '@web-ssh/shared-types'
 
 interface ConnectionManagerProps {

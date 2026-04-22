@@ -1,4 +1,4 @@
-import { useFileManager } from '../../stores/fileManagerStore'
+import { useFileManager } from '../../stores/fileManagerStore.tsx'
 
 export function TransferQueue() {
   const { transferJobs, updateTransferJob, removeTransferJob, cancelTransferJob, clearCompletedJobs } = useFileManager()

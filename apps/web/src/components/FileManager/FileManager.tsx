@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { useFileManager } from '../../stores/fileManagerStore'
+import { useFileManager } from '../../stores/fileManagerStore.tsx'
 import type { SFTPFile } from '@web-ssh/shared-types'
 
 export function FileManager() {

@@ -1,3 +1,5 @@
-Nothing needs to be added to the .gitignore file based on the provided changes. The changes consist only of source code files (.tsx) being added, deleted, and modified, without any build artifacts, dependencies, or temporary files that would require ignoring.
-temp_auto_push.bat
-temp_interactive_push.bat
+node_modules
+dist
+.env
+*.log
+.DS_Store

@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 2%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 145 63% 42%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 8%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 8%;
+    --muted-foreground: 240 4% 66%;
+    --accent: 213 94% 68%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 71%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 0 0% 100%;
+    --radius: 0.125rem;
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 145 63% 42%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 8%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 16%;
+    --sidebar-ring: 213 94% 68%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-[#050505] text-white antialiased; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #0A0A0A; }
+::-webkit-scrollbar-thumb { background: #27272A; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #3F3F46; }
+.scrollbar-none { scrollbar-width: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
+
+/* Fonts */
+.font-mono-data { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
+
+/* Selection */
+::selection { background: rgba(96, 165, 250, 0.3); color: #FFFFFF; }
+
+/* Row styles */
+.row-hover { transition: background-color 0.08s ease; }
+.row-hover:hover { background-color: #0F0F0F; }
+.row-active { background-color: #141414; border-left: 2px solid #60A5FA; }
+
+/* Terminal colors */
+.terminal-upload { color: #4ADE80; }
+.terminal-error { color: #F87171; }
+.terminal-info { color: #60A5FA; }
+.terminal-warning { color: #FACC15; }
+
+/* Animations */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner { animation: spin 1s linear infinite; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.fade-in { animation: fadeIn 0.2s ease-in; }
+
+@keyframes slideInUp {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.slide-in-up { animation: slideInUp 0.2s ease-out; }
+
+@keyframes pulse-border {
+  0%, 100% { border-color: rgba(74, 222, 128, 0.2); }
+  50% { border-color: rgba(74, 222, 128, 0.5); }
+}
+
+/* Status dots */
+.status-dot { width: 8px; height: 8px; border-radius: 50%; }
+.status-online { background-color: #4ADE80; box-shadow: 0 0 6px rgba(74, 222, 128, 0.4); }
+.status-offline { background-color: #F87171; }
+.status-warning { background-color: #FACC15; }
+
+/* Drag and drop */
+.drag-over { background-color: rgba(74, 222, 128, 0.03) !important; border: 1px dashed rgba(74, 222, 128, 0.3) !important; }
+
+/* Context menu */
+.context-menu { background-color: #141414; border: 1px solid #27272A; border-radius: 2px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6); }
+
+/* Navigation button */
+@layer components {
+  .nav-btn {
+    @apply p-1.5 text-[#A1A1AA] hover:text-white hover:bg-[#141414] transition-colors rounded-sm;
+  }
+
+  .action-btn {
+    @apply p-1.5 text-[#A1A1AA] hover:text-white hover:bg-[#141414] transition-colors flex items-center gap-1;
+  }
+
+  .preview-action-btn {
+    @apply p-1.5 text-[#A1A1AA] hover:text-white hover:bg-[#141414] transition-colors;
+  }
+}
+
+/* Permission display */
+.perm-bit { display: inline-block; width: 10px; text-align: center; }
+
+/* Line clamp */
+.line-clamp-1 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; }
+
+/* Input focus override */
+input:focus, textarea:focus { outline: none; }
+
+/* Button focus override */
+button:focus-visible { outline: 1px solid #60A5FA; outline-offset: 1px; }
+
+/* Smooth transitions for interactive elements */
+button, a, input, select { transition: all 0.1s ease; }
